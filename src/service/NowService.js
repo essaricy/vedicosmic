@@ -13,7 +13,7 @@ class NowService {
         };
     }
 
-    isActive(measure, number) {
+    isCurrent(measure, number) {
         const now = this.get();
         return ((measure === MeasureConstants.KALPA && now.kalpa === number)
             || (measure === MeasureConstants.MANVANTARA && now.manvanthara === number)
@@ -21,6 +21,23 @@ class NowService {
             || (measure === MeasureConstants.YUGA && now.yuga === number)
             || (measure === MeasureConstants.SAMVATSARA && now.samvatsara === number)
             || (measure === MeasureConstants.MASA && now.masa === number));
+    }
+
+    getCurrent(measure) {
+        const now = this.get();
+        if (measure === MeasureConstants.KALPA) {
+            return now.kalpa;
+        } else if (measure === MeasureConstants.MANVANTARA) {
+            return now.manvanthara;
+        } else if (measure === MeasureConstants.MAHAYUGA) {
+            return now.mahayuga;
+        } else if (measure === MeasureConstants.YUGA) {
+            return now.yuga;
+        } else if (measure === MeasureConstants.SAMVATSARA) {
+            return now.samvatsara;
+        } else if (measure === MeasureConstants.MASA) {
+            return now.masa;
+        }
     }
 }
 

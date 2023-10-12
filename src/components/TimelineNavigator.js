@@ -8,6 +8,11 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 
+//import Restore from '@mui/icons-material/Restore';
+//import AccessTime from '@mui/icons-material/AccessTime';
+//import Update from '@mui/icons-material/Update';
+
+
 import NowService from '../service/NowService';
 import TimelineService from '../service/TimelineService';
 
@@ -31,26 +36,28 @@ function TimelineNavigator() {
     setMeasure(nextMeasure);
   }
 
-  const handleClick = (active) => {
-    active && loadItems();
+  const handleClick = (current) => {
+    current && loadItems();
   }
 
   return (
     <Timeline position="alternate">
     {items && items.map((item,  index) => {
-      const active = nowService.isActive(measure, index+1);
+      const currentNumber = nowService.getCurrent(measure);
+      const current = currentNumber === index+1;
+      const past = currentNumber > index+1;
       return (
         <TimelineItem key={index}>
           <TimelineSeparator>
-            <TimelineDot color={ active ?  "success" : "grey"}
-               variant={ active ?  "filled" : "outlined"}
-               style={{ cursor: active ?  "pointer" : "none" }}
-               onClick={() => handleClick(active) } />
+            <TimelineDot color={ past ? "grey" : current ? "success" : "grey" }
+               variant={ past ? "filled" : current ? "filled" : "outlined" }
+               style={{ cursor: current ?  "pointer" : "none" }}
+               onClick={() => handleClick(current) } />
             { index !== items.length-1 ? <TimelineConnector /> : "" }
           </TimelineSeparator>
           <TimelineContent>
-          { active && <Link href="#" onClick={() => handleClick(active) }>{(index + 1) + '. ' + item.name}</Link>}
-          { !active && (index + 1) + '. ' + item.name }
+          { current && <Link href="#" onClick={() => handleClick(current) }>{(index + 1) + '. ' + item.name}</Link>}
+          { !current && (index + 1) + '. ' + item.name }
           </TimelineContent>
         </TimelineItem>
       );
