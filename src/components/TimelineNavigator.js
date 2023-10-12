@@ -1,4 +1,6 @@
 import { React, useEffect, useState } from 'react';
+
+import Link from '@mui/material/Link';
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
 import TimelineSeparator from '@mui/lab/TimelineSeparator';
@@ -46,7 +48,10 @@ function TimelineNavigator() {
                onClick={() => handleClick(active) } />
             { index !== items.length-1 ? <TimelineConnector /> : "" }
           </TimelineSeparator>
-          <TimelineContent>{(index + 1) + '. ' + item.name}</TimelineContent>
+          <TimelineContent>
+          { active && <Link href="#" onClick={() => handleClick(active) }>{(index + 1) + '. ' + item.name}</Link>}
+          { !active && (index + 1) + '. ' + item.name }
+          </TimelineContent>
         </TimelineItem>
       );
     })}
