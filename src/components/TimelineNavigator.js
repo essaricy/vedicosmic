@@ -6,27 +6,44 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineDot from '@mui/lab/TimelineDot';
 
+import NowService from '../service/NowService';
 import TimelineService from '../service/TimelineService';
 
+const nowService = new NowService();
 const timelineService = new TimelineService();
 
-function VedicTimeline() {
+function TimelineNavigator() {
   const [ measure, setMeasure ] = useState(null);
   const [ items, setItems ] = useState([]);
 
   useEffect(() => {
-    setMeasure(timelineService.getNextMeasure(measure));
-    setItems(timelineService.getAll(measure));
+    if (measure === null) {
+      loadItems();
+    }
   }, [ items ]);
+
+  const loadItems = () => {
+    const nextMeasure = timelineService.getNextMeasure(measure);
+    const newItems = timelineService.getAll(nextMeasure);
+    setItems(newItems);
+    setMeasure(nextMeasure);
+  }
+
+  const handleClick = (active) => {
+    active && loadItems();
+  }
 
   return (
     <Timeline position="alternate">
     {items && items.map((item,  index) => {
+      const active = nowService.isActive(measure, index+1);
       return (
-        <TimelineItem>
+        <TimelineItem key={index}>
           <TimelineSeparator>
-            <TimelineDot color={ item.active ?  "success" : "grey"}
-               variant={ item.active ?  "filled" : "outlined"} />
+            <TimelineDot color={ active ?  "success" : "grey"}
+               variant={ active ?  "filled" : "outlined"}
+               style={{ cursor: active ?  "pointer" : "none" }}
+               onClick={() => handleClick(active) } />
             { index !== items.length-1 ? <TimelineConnector /> : "" }
           </TimelineSeparator>
           <TimelineContent>{(index + 1) + '. ' + item.name}</TimelineContent>
@@ -37,4 +54,4 @@ function VedicTimeline() {
   );
 }
 
-export default VedicTimeline;
+export default TimelineNavigator;

@@ -1,0 +1,9 @@
+export const KALPA = "KALPA";
+export const MANVANTARA = "MANVANTARA";
+export const MAHAYUGA = "MAHAYUGA";
+export const YUGA = "YUGA";
+export const SAMVATSARA = "SAMVATSARA";
+export const MASA = "MASA";
+export const THIDI = "THIDI";
+export const GADIYA = "GADIYA";
+export const KSHANA = "KSHANA";
